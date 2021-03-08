@@ -17,8 +17,8 @@ Auth::routes();
 
 Route::group(['middleware' => ['guest']], function () {
 
-    Route::get('/', function () {
-        return view('auth.login');
+    Route::get('/good', function () {
+        return 'good';
     });
 
 });
