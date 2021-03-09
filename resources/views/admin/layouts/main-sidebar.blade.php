@@ -43,9 +43,14 @@
                             <div class="clearfix"></div>
                         </a>
                         <ul id="sections-menu" class="collapse" data-parent="#sidebarnav">
-                            <li> <a href="{{ route('products.index') }}">اضافه منتج </a> </li>
+                            <li> <a href="{{ route('products.index') }}"> كل المنتجات </a> </li>
+                            <li> <a href="{{ route('products.create') }}">اضافه ملعومات </a> </li>
+                            <li> <a href="{{ route('product_main_imgs') }}">اضافه صور للمنتج </a> </li>
 
                         </ul>
+
+
+
                     </li>
 
 

@@ -10,14 +10,16 @@ use Spatie\Translatable\HasTranslations;
 class Category extends Model
 {
     protected $fillable = ['name'];
+    protected $hidden = ['created_at', 'updated_at', 'pivot'];
     use HasTranslations;
     public $translatable = ['name'];
     // protected $table = 'categories';
 
     public $timestamps = true;
 
-    public function product()
+    public function products()
     {
-        return $this->hasMany(Product::class);
+        return $this->belongsToMany(Product::class);
     }
+
 }

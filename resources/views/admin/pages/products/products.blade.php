@@ -37,9 +37,12 @@
                 </div>
                 @endif
 
-                <button type="button" class="button x-small" data-toggle="modal" data-target="#exampleModal">
-                    اضافه منتجات
-                </button>
+
+                <a href="{{ route('products.create') }}" class="button x-small">
+
+                    اضافه منتج
+                </a>
+
                 <br><br>
 
                 <div class="table-responsive">
@@ -51,34 +54,70 @@
                                 <th>اسم المنتج بالعربيه</th>
                                 <th>اسم المنتج بالانجليزيه</th>
                                 <th> قسم المنتج</th>
+
+
+
+
+                                <th>كود المنتج</th>
+                                <th>لون المنتج</th>
+                                <th>صوره</th>
+                                <th>صوره العر ض</th>
                                 <th> تاريخ الاضافه</th>
 
-
+                                <th>الاجراءات</th>
 
                             </tr>
                         </thead>
                         <tbody>
+
+
+
+
                             <?php $i = 0; ?>
 
-                            @if ($products)
+                            @if ($products && $productImgs)
 
 
                             @foreach ($products as $product)
+                            @foreach ($productImgs as $productImg)
+
                             <tr>
                                 <?php $i++; ?>
                                 <td>{{ $i }}</td>
 
-                                <td>{{$product->getTranslation('name','en')}}</td>
+
                                 <td>{{$product->getTranslation('name','ar')}}</td>
-                                {{-- <td>{{$product->products[0]->getTranslation('name','ar')}}</td> --}}
-                                {{-- <td>{{ $product->products->pluck('name')->implode(',') }}</td> --}}
+                                <td>{{$product->getTranslation('name','en')}}</td>
+                                <td>{{$product->categories->pluck('name')->implode(',')}}</td>
+
+                                <td>{{ $productImg->code_img }}</td>
+                                <td>{{ $productImg->colors->pluck('name')->implode(',')}}</td>
+
+                                <td>
+                                    <img style="height: 50px; width: 50px;"
+                                        src="{{ asset('admin/img/'.$productImg->tiny_img) }}" alt="">
+                                </td>
+                                <td>
+                                    <img style="height: 72px; width: 60px;"
+                                        src="{{ asset('admin/img/'.$productImg->max_img) }}" alt="">
+                                </td>
+
+
+
+
+
+
+
+
+
+
 
                                 <td>{{ \Carbon\Carbon::parse($product->created_at)->diffForhumans() }}</td>
 
                                 <td>
-                                    <button type="button" class="btn btn-info btn-sm" data-toggle="modal"
-                                        data-target="#edit{{ $product->id }}"
-                                        title="{{ trans('Grades_trans.Edit') }}"><i class="fa fa-edit"></i></button>
+                                    <a href="{{ route('products.edit',$product->id) }}" type="button"
+                                        class="btn btn-info btn-sm" title="{{ trans('Grades_trans.Edit') }}"><i
+                                            class="fa fa-edit"></i></a>
                                     <button type="button" class="btn btn-danger btn-sm" data-toggle="modal"
                                         data-target="#delete{{ $product->id }}"
                                         title="{{ trans('Grades_trans.Delete') }}"><i class="fa fa-trash"></i></button>
@@ -86,110 +125,110 @@
                             </tr>
 
                             <!-- edit_modal_Grade -->
-                            <div class="modal fade" id="edit{{ $product->id }}" tabindex="-1" role="dialog"
-                                aria-labelledby="exampleModalLabel" aria-hidden="true">
-                                <div class="modal-dialog" role="document">
-                                    <div class="modal-content">
-                                        <div class="modal-header">
-                                            <h5 style="font-family: 'Cairo', sans-serif;" class="modal-title"
-                                                id="exampleModalLabel">
-                                                تعديل بيانات المنتج
-                                            </h5>
-                                            <button type="button" class="close" data-dismiss="modal" aria-label="Close">
-                                                <span aria-hidden="true">&times;</span>
-                                            </button>
-                                        </div>
-                                        <div class="modal-body">
-                                            <!-- add_form -->
-
-
-
-                                            <form action="{{ route('products.update', 'test') }}" method="post">
-                                                {{ method_field('patch') }}
-                                                @csrf
-                                                <div class="row">
-                                                    <div class="col">
-                                                        <label for="Name" class="mr-sm-2">ادخل اسم المنتح بالعربيه
-                                                            :</label>
-                                                        <input type="text" name="name_ar" class="form-control" required>
-
-                                                    </div>
-                                                    <div class="col">
-                                                        <label for="Name_en" class="mr-sm-2">ادخل اسم المنتح بالانجليزيه
-                                                            :</label>
-                                                        <input type="text" class="form-control" name="name_en" required>
-                                                    </div>
-                                                    <div class="col-md-12">
-                                                        <label>اختر قسم المنتج :</label>
-                                                        <select name="category_id" class="form-control" id="" required
-                                                            style="height: 55px;">
-                                                            <option value="" disabled selected>--اخترقسم المنتج--
-                                                            </option>
-                                                            @foreach ($categories as $category)
-                                                            <option value="{{$category->id}}">{{$category->name}}
-                                                            </option>
-                                                            @endforeach
-                                                        </select>
-                                                    </div>
-                                                </div>
-
-                                                <br><br>
-                                        </div>
-                                        <div class="modal-footer">
-                                            <button type="button" class="btn btn-secondary"
-                                                data-dismiss="modal">غلق</button>
-                                            <button type="submit" class="btn btn-success">اضافه قسم</button>
-                                        </div>
-                                        </form>
-
+                            {{-- <div class="modal fade" id="edit{{ $products->id }}" tabindex="-1" role="dialog"
+                            aria-labelledby="exampleModalLabel" aria-hidden="true">
+                            <div class="modal-dialog" role="document">
+                                <div class="modal-content">
+                                    <div class="modal-header">
+                                        <h5 style="font-family: 'Cairo', sans-serif;" class="modal-title"
+                                            id="exampleModalLabel">
+                                            تعديل بيانات المنتج
+                                        </h5>
+                                        <button type="button" class="close" data-dismiss="modal" aria-label="Close">
+                                            <span aria-hidden="true">&times;</span>
+                                        </button>
                                     </div>
+                                    <div class="modal-body">
+                                        <!-- add_form -->
+
+
+
+                                        <form action="{{ route('products.update', 'test') }}" method="post">
+                                            {{ method_field('patch') }}
+                                            @csrf
+                                            <div class="row">
+                                                <div class="col">
+                                                    <label for="Name" class="mr-sm-2">ادخل اسم المنتح بالعربيه
+                                                        :</label>
+                                                    <input type="text" name="name_ar" class="form-control" required>
+
+                                                </div>
+                                                <div class="col">
+                                                    <label for="Name_en" class="mr-sm-2">ادخل اسم المنتح بالانجليزيه
+                                                        :</label>
+                                                    <input type="text" class="form-control" name="name_en" required>
+                                                </div>
+                                                <div class="col-md-12">
+                                                    <label>اختر قسم المنتج :</label>
+                                                    <select name="category_id" class="form-control" id="" required
+                                                        style="height: 55px;">
+                                                        <option value="" disabled selected>--اخترقسم المنتج--
+                                                        </option>
+                                                        @foreach ($categories as $category)
+                                                        <option value="{{$category->id}}">{{$category->name}}
+                                                        </option>
+                                                        @endforeach
+                                                    </select>
+                                                </div>
+                                            </div>
+
+                                            <br><br>
+                                    </div>
+                                    <div class="modal-footer">
+                                        <button type="button" class="btn btn-secondary"
+                                            data-dismiss="modal">غلق</button>
+                                        <button type="submit" class="btn btn-success">اضافه قسم</button>
+                                    </div>
+                                    </form>
+
                                 </div>
                             </div>
-                </div>
+                </div> --}}
+            </div>
 
-                <!-- delete_modal_Grade -->
-                {{--   <div class="modal fade" id="delete{{ $category->id }}" tabindex="-1" role="dialog"
-                aria-labelledby="exampleModalLabel" aria-hidden="true">
-                <div class="modal-dialog" role="document">
-                    <div class="modal-content">
-                        <div class="modal-header">
-                            <h5 style="font-family: 'Cairo', sans-serif;" class="modal-title" id="exampleModalLabel">
-                                حذف القسم
-                            </h5>
-                            <button type="button" class="close" data-dismiss="modal" aria-label="Close">
-                                <span aria-hidden="true">&times;</span>
-                            </button>
-                        </div>
-                        <div class="modal-body">
-                            <form action="{{ route('Categories.destroy', 'test') }}" method="post">
-                                {{ method_field('Delete') }}
-                                @csrf
-                                {{ trans('Grades_trans.Warning_Grade') }}
-                                <input id="id" type="hidden" name="id" class="form-control" value="{{ $category->id }}">
-                                <div class="modal-footer">
-                                    <button type="button" class="btn btn-secondary"
-                                        data-dismiss="modal">{{ trans('Grades_trans.Close') }}</button>
-                                    <button type="submit"
-                                        class="btn btn-danger">{{ trans('Grades_trans.submit') }}</button>
-                                </div>
-                            </form>
-                        </div>
+            <!-- delete_modal_Grade -->
+            {{--   <div class="modal fade" id="delete{{ $category->id }}" tabindex="-1" role="dialog"
+            aria-labelledby="exampleModalLabel" aria-hidden="true">
+            <div class="modal-dialog" role="document">
+                <div class="modal-content">
+                    <div class="modal-header">
+                        <h5 style="font-family: 'Cairo', sans-serif;" class="modal-title" id="exampleModalLabel">
+                            حذف القسم
+                        </h5>
+                        <button type="button" class="close" data-dismiss="modal" aria-label="Close">
+                            <span aria-hidden="true">&times;</span>
+                        </button>
+                    </div>
+                    <div class="modal-body">
+                        <form action="{{ route('Categories.destroy', 'test') }}" method="post">
+                            {{ method_field('Delete') }}
+                            @csrf
+                            {{ trans('Grades_trans.Warning_Grade') }}
+                            <input id="id" type="hidden" name="id" class="form-control" value="{{ $category->id }}">
+                            <div class="modal-footer">
+                                <button type="button" class="btn btn-secondary"
+                                    data-dismiss="modal">{{ trans('Grades_trans.Close') }}</button>
+                                <button type="submit" class="btn btn-danger">{{ trans('Grades_trans.submit') }}</button>
+                            </div>
+                        </form>
                     </div>
                 </div>
-            </div> --}}
+            </div>
+        </div> --}}
 
 
-            @endforeach
-            @endif
-            </table>
-        </div>
+        @endforeach
+        @endforeach
+        @endif
+        </table>
     </div>
+</div>
 </div>
 </div>
 
 
 <!-- add_modal_Grade -->
-<div class="modal fade" id="exampleModal" tabindex="-1" role="dialog" aria-labelledby="exampleModalLabel"
+{{-- <div class="modal fade" id="exampleModal" tabindex="-1" role="dialog" aria-labelledby="exampleModalLabel"
     aria-hidden="true">
     <div class="modal-dialog" role="document">
         <div class="modal-content">
@@ -204,41 +243,124 @@
             <div class="modal-body">
                 <!-- add_form -->
                 <form action="{{ route('products.store') }}" method="POST">
-                    @csrf
-                    <div class="row">
-                        <div class="col">
-                            <label for="Name" class="mr-sm-2">ادخل اسم المنتح بالعربيه
-                                :</label>
-                            <input type="text" name="name_ar" class="form-control" required>
+@csrf
+<div class="row">
+    <div class="col">
+        <label for="Name" class="mr-sm-2">ادخل اسم المنتح بالعربيه
+            :</label>
+        <input type="text" name="name_ar" class="form-control" required>
 
-                        </div>
-                        <div class="col">
-                            <label for="Name_en" class="mr-sm-2">ادخل اسم المنتح بالانجليزيه
-                                :</label>
-                            <input type="text" class="form-control" name="name_en" required>
-                        </div>
-                        <div class="col-md-12">
-                            <label>اختر قسم المنتج :</label>
-                            <select name="category_id" class="form-control" id="" required style="height: 55px;">
-                                <option value="" disabled selected>--اخترقسم المنتج--</option>
-                                @foreach ($categories as $category)
-                                <option value="{{$category->id}}">{{$category->name}}</option>
-                                @endforeach
-                            </select>
-                        </div>
-                    </div>
-
-                    <br><br>
-            </div>
-            <div class="modal-footer">
-                <button type="button" class="btn btn-secondary" data-dismiss="modal">غلق</button>
-                <button type="submit" class="btn btn-success">اضافه قسم</button>
-            </div>
-            </form>
-
-        </div>
     </div>
+    <div class="col">
+        <label for="Name_en" class="mr-sm-2">ادخل اسم المنتح بالانجليزيه
+            :</label>
+        <input type="text" class="form-control" name="name_en" required>
+    </div>
+
+
+
+    <div class="col-md-12">
+        <label>اختر قسم المنتج :</label>
+        <select name="category_id" class="form-control" id="" required style="height: 55px;">
+            <option value="" disabled selected>--اخترقسم المنتج--</option>
+            @foreach ($categories as $category)
+            <option value="{{$category->id}}">{{$category->name}}</option>
+            @endforeach
+        </select>
+    </div>
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+    <div class="col-md-4">
+        <label>اختر لون المنتج :</label>
+        <select name="color_id" class="form-control" id="" required style="height: 38px;
+
+                          padding: 0; ">
+            <option value="" disabled selected>-اختر لون المنتج-</option>
+            @foreach ($colors as $color)
+            <option value="{{$color->id}}">{{$color->name}}</option>
+            @endforeach
+        </select>
+    </div>
+
+
+    <div class="col-md-4">
+        <label> كود المنتج</label>
+        <input type="number" class="form-control" name="code" required>
+
+    </div>
+
+    <div class="col-md-4">
+        <label>صوره المننج</label>
+        <input type="file">
+    </div>
+    <div class="col-md-4">
+        <label>صوره العمل</label>
+        <input type="file">
+    </div>
+    <div class="col-md-4">
+        <button type="button" class="btn btn-secondary btn-sml btn-block" data-dismiss="modal">حفظ</button>
+
+    </div>
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
 </div>
+
+<br><br>
+</div>
+<div class="modal-footer">
+    <button type="button" class="btn btn-secondary" data-dismiss="modal">غلق</button>
+    <button type="submit" class="btn btn-success">اضافه قسم</button>
+</div>
+</form>
+
+</div>
+</div>
+</div> --}}
 
 </div>
 

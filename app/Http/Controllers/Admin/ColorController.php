@@ -4,6 +4,7 @@ namespace App\Http\Controllers\Admin;
 
 use App\Http\Controllers\Controller;
 use App\Models\Color;
+use Carbon\Carbon;
 use Illuminate\Http\Request;
 
 class ColorController extends Controller
@@ -39,7 +40,28 @@ class ColorController extends Controller
      */
     public function store(Request $request)
     {
-        //
+        if (Color::where('name->ar', $request->name_ar)->orWhere('name->en', $request->name_en)->exists()) {
+
+            return redirect()->back()->withErrors('اسم الحقل موجود بالفعل ');
+        }
+
+        $request->validate([
+            'name_ar' => 'required|unique:colors,name->ar',
+            'name_en' => 'required|unique:colors,name->en',
+        ]);
+
+        try {
+            $color = Color::create([
+                'name' => ["en" => $request->name_en, "ar" => $request->name_ar],
+                'created_at' => Carbon::now(),
+            ]);
+
+            toastr()->success(trans('messages.success'));
+            return redirect()->route('colors.index');
+        } catch (\Exception $e) {
+            return redirect()->back()->withErrors(['error' => $e->getMessage()]);
+        }
+
     }
 
     /**
@@ -71,9 +93,27 @@ class ColorController extends Controller
      * @param  \App\Models\Color  $color
      * @return \Illuminate\Http\Response
      */
-    public function update(Request $request, Color $color)
+    public function update(Request $request, $id)
     {
-        //
+
+        $request->validate([
+            'name_ar' => 'required|unique:colors,name->ar,' . $request->id,
+            'name_en' => 'required|unique:colors,name->en,' . $request->id,
+
+        ]);
+
+        try {
+            $color = Color::find($request->id)->update([
+                'name' => ["en" => $request->name_en, "ar" => $request->name_ar],
+                'created_at' => Carbon::now(),
+            ]);
+
+            toastr()->success(trans('messages.success'));
+            return redirect()->route('colors.index');
+        } catch (\Exception $e) {
+            return redirect()->back()->withErrors(['error' => $e->getMessage()]);
+        }
+
     }
 
     /**

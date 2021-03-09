@@ -38,7 +38,7 @@
                 @endif
 
                 <button type="button" class="button x-small" data-toggle="modal" data-target="#exampleModal">
-                    {{ trans('Grades_trans.add_Grade') }}
+                    اضافه قسم
                 </button>
                 <br><br>
 
@@ -48,8 +48,9 @@
                         <thead>
                             <tr>
                                 <th>#</th>
-                                <th>اسم القسم بالعربيه</th>
+
                                 <th>اسم القسم بالانجليزيه</th>
+                                <th>اسم القسم بالعربيه</th>
                                 <th>تاريخ الاضافه</th>
                                 <th>الاجرائات</th>
 

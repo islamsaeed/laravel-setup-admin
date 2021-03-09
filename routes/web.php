@@ -46,13 +46,23 @@ Route::group(
         Route::group(['namespace' => 'Admin'], function () {
             Route::resource('Categories', 'CategoryController');
         });
-        //==============================categories============================
+        //==============================ColorController============================
         Route::group(['namespace' => 'Admin'], function () {
             Route::resource('colors', 'ColorController');
         });
-        //==============================categories============================
+        //==============================ColorController============================
         Route::group(['namespace' => 'Admin'], function () {
             Route::resource('products', 'ProductController');
+        });
+
+        //==============================ProductImgController============================
+        Route::group(['namespace' => 'Admin'], function () {
+            Route::resource('product_img', 'ProductImgController');
+        });
+//==============================ProductImgController============================
+
+        Route::group(['namespace' => 'Admin'], function () {
+            Route::get('product_main_imgs', 'ProductImgController@product_main_imgs')->name('product_main_imgs');
         });
 
     });

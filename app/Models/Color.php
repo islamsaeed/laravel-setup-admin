@@ -13,4 +13,8 @@ class Color extends Model
     protected $fillable = ['name'];
     public $timestamps = true;
 
+    public function colors()
+    {
+        return $this->belongsToMany('App\Models\ProductImg', 'color_productImgs', 'color_id', 'product_img_id');
+    }
 }
