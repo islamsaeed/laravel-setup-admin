@@ -15,22 +15,27 @@ use Illuminate\Support\Facades\Route;
 
 Auth::routes();
 
-Route::group(['middleware' => ['guest']], function () {
+// Route::group(['middleware' => ['guest']], function () {
 
-    Route::get('/good', function () {
-        return 'good';
-    });
+//     Route::get('/', function () {
+//         return view('auth.login');
+//     });
 
-});
+// });
 
 //==============================Translate all pages============================
 Route::group(
     [
         'prefix' => LaravelLocalization::setLocale(),
-        'middleware' => ['localeSessionRedirect', 'localizationRedirect', 'localeViewPath', 'auth'],
-    ], function () {
+        'middleware' => ['localeSessionRedirect', 'localizationRedirect', 'localeViewPath'],
+    ], function ()
+    {
 
-        //==============================dashboard============================
-        // Route::get('/dashboard', 'HomeController@index')->name('dashboard');
+        //==============================Welcome============================
+        Route::get('/home', 'site\allController@home')->name('home');
+        Route::get('/aboutUs', 'site\allController@aboutUs')->name('aboutUs');
+        Route::get('/products', 'site\allController@products')->name('products');
+        Route::get('/galaries', 'site\allController@galaries')->name('galaries');
+        Route::get('/contactUs', 'site\allController@contactUs')->name('contactUs');
 
     });

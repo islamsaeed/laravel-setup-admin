@@ -11,7 +11,7 @@ class ProductImg extends Model
     protected $hidden = ['created_at', 'updated_at', 'pivot'];
     //   use SoftDeletes;
 
-    protected $fillable = ['color_id', 'product_id', 'tiny_img', 'max_img', 'code_img', 'updated_at', 'created_at'];
+    protected $fillable = ['color_name', 'product_id', 'tiny_img', 'max_img', 'code_img', 'updated_at', 'created_at'];
     public $timestamps = true;
 
     /**

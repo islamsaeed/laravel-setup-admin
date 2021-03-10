@@ -19,7 +19,6 @@ class CreateProductsTable extends Migration
             $table->string('name');
             $table->boolean('top_product')->default(0);
 
-
             $table->timestamps();
         });
     }

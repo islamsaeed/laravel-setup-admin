@@ -54,10 +54,6 @@
                                 <th>اسم المنتج بالعربيه</th>
                                 <th>اسم المنتج بالانجليزيه</th>
                                 <th> قسم المنتج</th>
-
-
-
-
                                 <th>كود المنتج</th>
                                 <th>لون المنتج</th>
                                 <th>صوره</th>
@@ -70,16 +66,13 @@
                         </thead>
                         <tbody>
 
-
-
-
                             <?php $i = 0; ?>
 
-                            @if ($products && $productImgs)
+                            @if ($products)
 
 
                             @foreach ($products as $product)
-                            @foreach ($productImgs as $productImg)
+
 
                             <tr>
                                 <?php $i++; ?>
@@ -90,25 +83,22 @@
                                 <td>{{$product->getTranslation('name','en')}}</td>
                                 <td>{{$product->categories->pluck('name')->implode(',')}}</td>
 
-                                <td>{{ $productImg->code_img }}</td>
-                                <td>{{ $productImg->colors->pluck('name')->implode(',')}}</td>
+                                <td>{{$product->productImage->pluck('code_img')->implode(',')}}</td>
+
+                                <td>{{$product->productImage->pluck('color_name')->implode(',')}}</td>
+
+
 
                                 <td>
                                     <img style="height: 50px; width: 50px;"
-                                        src="{{ asset('admin/img/'.$productImg->tiny_img) }}" alt="">
+                                        src="{{ asset('admin/img/'.$product->productImage->pluck('tiny_img')->implode(',')) }}"
+                                        alt="">
                                 </td>
                                 <td>
-                                    <img style="height: 72px; width: 60px;"
-                                        src="{{ asset('admin/img/'.$productImg->max_img) }}" alt="">
+                                    <img style="height: 50px; width: 50px;"
+                                        src="{{ asset('admin/img/'.$product->productImage->pluck('max_img')->implode(',')) }}"
+                                        alt="">
                                 </td>
-
-
-
-
-
-
-
-
 
 
 
@@ -124,106 +114,52 @@
                                 </td>
                             </tr>
 
-                            <!-- edit_modal_Grade -->
-                            {{-- <div class="modal fade" id="edit{{ $products->id }}" tabindex="-1" role="dialog"
-                            aria-labelledby="exampleModalLabel" aria-hidden="true">
-                            <div class="modal-dialog" role="document">
-                                <div class="modal-content">
-                                    <div class="modal-header">
-                                        <h5 style="font-family: 'Cairo', sans-serif;" class="modal-title"
-                                            id="exampleModalLabel">
-                                            تعديل بيانات المنتج
-                                        </h5>
-                                        <button type="button" class="close" data-dismiss="modal" aria-label="Close">
-                                            <span aria-hidden="true">&times;</span>
-                                        </button>
-                                    </div>
-                                    <div class="modal-body">
-                                        <!-- add_form -->
-
-
-
-                                        <form action="{{ route('products.update', 'test') }}" method="post">
-                                            {{ method_field('patch') }}
-                                            @csrf
-                                            <div class="row">
-                                                <div class="col">
-                                                    <label for="Name" class="mr-sm-2">ادخل اسم المنتح بالعربيه
-                                                        :</label>
-                                                    <input type="text" name="name_ar" class="form-control" required>
-
+                            <!-- delete_modal_Grade -->
+                            <div class="modal fade" id="delete{{ $product->id }}" tabindex="-1" role="dialog"
+                                aria-labelledby="exampleModalLabel" aria-hidden="true">
+                                <div class="modal-dialog" role="document">
+                                    <div class="modal-content">
+                                        <div class="modal-header">
+                                            <h5 style="font-family: 'Cairo', sans-serif;" class="modal-title"
+                                                id="exampleModalLabel">
+                                                حذف القسم
+                                            </h5>
+                                            <button type="button" class="close" data-dismiss="modal" aria-label="Close">
+                                                <span aria-hidden="true">&times;</span>
+                                            </button>
+                                        </div>
+                                        <div class="modal-body">
+                                            <form action="{{ route('deleteAll','test') }}" method="post">
+                                                {{ method_field('Delete') }}
+                                                @csrf
+                                                {{ trans('Grades_trans.Warning_Grade') }}
+                                                <input type="hidden" name="product_id" class="form-control"
+                                                    value="{{ $product->id }}">
+                                                <div class="modal-footer">
+                                                    <button type="button" class="btn btn-secondary"
+                                                        data-dismiss="modal">{{ trans('Grades_trans.Close') }}</button>
+                                                    <button type="submit" class="btn btn-danger">حذف البيانات</button>
                                                 </div>
-                                                <div class="col">
-                                                    <label for="Name_en" class="mr-sm-2">ادخل اسم المنتح بالانجليزيه
-                                                        :</label>
-                                                    <input type="text" class="form-control" name="name_en" required>
-                                                </div>
-                                                <div class="col-md-12">
-                                                    <label>اختر قسم المنتج :</label>
-                                                    <select name="category_id" class="form-control" id="" required
-                                                        style="height: 55px;">
-                                                        <option value="" disabled selected>--اخترقسم المنتج--
-                                                        </option>
-                                                        @foreach ($categories as $category)
-                                                        <option value="{{$category->id}}">{{$category->name}}
-                                                        </option>
-                                                        @endforeach
-                                                    </select>
-                                                </div>
-                                            </div>
-
-                                            <br><br>
+                                            </form>
+                                        </div>
                                     </div>
-                                    <div class="modal-footer">
-                                        <button type="button" class="btn btn-secondary"
-                                            data-dismiss="modal">غلق</button>
-                                        <button type="submit" class="btn btn-success">اضافه قسم</button>
-                                    </div>
-                                    </form>
-
                                 </div>
                             </div>
-                </div> --}}
-            </div>
+                            @endforeach
+                            @endif
 
-            <!-- delete_modal_Grade -->
-            {{--   <div class="modal fade" id="delete{{ $category->id }}" tabindex="-1" role="dialog"
-            aria-labelledby="exampleModalLabel" aria-hidden="true">
-            <div class="modal-dialog" role="document">
-                <div class="modal-content">
-                    <div class="modal-header">
-                        <h5 style="font-family: 'Cairo', sans-serif;" class="modal-title" id="exampleModalLabel">
-                            حذف القسم
-                        </h5>
-                        <button type="button" class="close" data-dismiss="modal" aria-label="Close">
-                            <span aria-hidden="true">&times;</span>
-                        </button>
-                    </div>
-                    <div class="modal-body">
-                        <form action="{{ route('Categories.destroy', 'test') }}" method="post">
-                            {{ method_field('Delete') }}
-                            @csrf
-                            {{ trans('Grades_trans.Warning_Grade') }}
-                            <input id="id" type="hidden" name="id" class="form-control" value="{{ $category->id }}">
-                            <div class="modal-footer">
-                                <button type="button" class="btn btn-secondary"
-                                    data-dismiss="modal">{{ trans('Grades_trans.Close') }}</button>
-                                <button type="submit" class="btn btn-danger">{{ trans('Grades_trans.submit') }}</button>
-                            </div>
-                        </form>
-                    </div>
+                        </tbody>
                 </div>
+
+
+
+
+                {{-- @endforeach --}}
+
+                </table>
             </div>
-        </div> --}}
-
-
-        @endforeach
-        @endforeach
-        @endif
-        </table>
+        </div>
     </div>
-</div>
-</div>
 </div>
 
 

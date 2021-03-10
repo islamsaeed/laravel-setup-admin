@@ -61,12 +61,10 @@
                             <div class="form-group col-6">
 
                                 <label>اختر لون المنتج</label>
-                                <select name="color_id" class="form-control" id="" required style="height: 55px;">
-                                    <option value="" disabled selected>--احتر لون المنتج--</option>
-                                    @foreach ($colors as $color)
-                                    <option value="{{$color->id}}">{{$color->name}}</option>
-                                    @endforeach
-                                </select>
+                                <input name="color_name" class="form-control" type="text" required
+                                    placeholder="ادخل لون المنتج">
+
+
                             </div>
                         </div>
 
@@ -75,17 +73,17 @@
                             <div class="form-group col-md-6 col-sm-12">
 
                                 <label style="display: block; margin-bottom:5px">صوره منتج</label>
-                                <input type="file" name="tiny_img">
+                                <input type="file" name="tiny_img[]" multiple>
                             </div>
 
                             <div class="form-group col-6 col-sm-12">
 
                                 <label style="display: block; margin-bottom:5px">صوره لمعرض الاعمال </label>
-                                <input type="file" name="max_img">
+                                <input type="file" name="max_img[]" multiple>
 
                             </div>
                         </div>
-
+                        {{--
                         @if ($products && $products->count() > 0 ) <div class="row">
                             <div class="form-group col-6">
 
@@ -94,48 +92,48 @@
                                     <option value="" disabled selected>--احتر اسم المنتج--</option>
                                     @foreach ($products as $product)
                                     <option value="{{$product->id}}">{{$product->name}}</option>
-                                    @endforeach
-                                </select>
-                            </div>
-                        </div>
-
-                        @else
-
-
-                        <div class="alert alert-danger" role="alert">
-                            <strong>من فضلتك قم بدخال اسم المنتج اولا</strong>
-                            <a class=" btn btn-outline-info btn-sml" style="font-weight: 900"
-                                href="{{ route('products.create') }}"> اضف ملعومات
-                                المنتج </a> من هنا
-                        </div>
-                        @endif
-
-
-
-
-                        @if ($products && $products->count() >0 )
-                        <div class="modal-footer show_relative">
-
-                            <button type="submit" class="btn btn-success ">اضافه صور المنتج</button>
-
-                        </div>
-                        @else
-                        <button type="submit" class="btn btn-success " disabled>اضافه صور المنتج</button>
-                        @endif
-
-                    </form>
+                        @endforeach
+                        </select>
                 </div>
+            </div>
+
+            @else
+
+
+            <div class="alert alert-danger" role="alert">
+                <strong>من فضلتك قم بدخال اسم المنتج اولا</strong>
+                <a class=" btn btn-outline-info btn-sml" style="font-weight: 900" href="{{ route('products.create') }}">
+                    اضف ملعومات
+                    المنتج </a> من هنا
+            </div>
+            @endif --}}
 
 
 
 
+            {{-- @if ($products && $products->count() >0 )
+            <div class="modal-footer show_relative">
 
-
-
+                <button type="submit" class="btn btn-success ">اضافه صور المنتج</button>
 
             </div>
+
+            <button type="submit" class="btn btn-success " disabled>اضافه صور المنتج</button>
+            @endif  --}}
+            <button type="submit" class="btn btn-success ">اضافه صور المنتج</button>
+            </form>
         </div>
+
+
+
+
+
+
+
+
     </div>
+</div>
+</div>
 </div>
 
 {{-- <style>

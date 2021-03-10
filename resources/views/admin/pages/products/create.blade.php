@@ -62,14 +62,26 @@
                             </div>
 
                         </div>
+                        <br>
                         <div class="row">
-                            <div class="col-md-12">
+                            <div class="col-md-6">
                                 <label>اختر قسم المنتج :</label>
                                 <select name="category_id" class="form-control" id="" required style="height: 55px;">
-                                    <option value="" disabled selected>--اختر قسم المنتج--</option>
+                                    <option value="" disabled selected>-اختر قسم المنتج-</option>
                                     @foreach ($categories as $category)
                                     <option value="{{$category->id}}">{{$category->name}}</option>
                                     @endforeach
+                                </select>
+                            </div>
+
+                            <div class="col-md-6">
+                                <label>اضافه المنتج الى اهم المنتجات</label>
+                                <select name="top_product" class="form-control" id="" required style="height: 55px;">
+                                    <option disabled selected>- منتج مهم؟-</option>
+
+                                    <option value="1"> من اهم المنتجات </option>
+                                    <option value="0"> منتج عادى</option>
+
                                 </select>
                             </div>
                         </div>
@@ -96,89 +108,16 @@
 
 
 
-
-
-
-
-
             </div>
         </div>
     </div>
 </div>
-
-{{-- <style>
-    .show_relative {
-        position: relative;
-    }
-
-    #show_form {
-
-        position: absolute;
-        border-radius: 50%;
-        font-size: 18px;
-        line-height: 20px;
-        font-weight: 800;
-
-        bottom: 45%;
-
-    }
-</style> --}}
 
 <!-- row closed -->
 @endsection
 @section('js')
 @toastr_js
 @toastr_render
-{{--
-
-<script>
-    $(document).ready(function() {
-
-    $('#show_form').on('click',function () {
-        // e.preventDefault();
-          $('#sadon').toggle(1000);
-
-      });
-
-      });
-
-
-
-
-$('#save_product').on('click',function (e) {
-    e.preventDefault();
-    var formData = new FormData($('#product_img_form')[0]);
-
-       $.ajax({
-            type: 'post',
-            url: "{{route('product_img.store')}}",
-data: formData,
-processData: true,
-contentType: true,
-cache: false,
-success:function (data) {
-
-// $('tbody').html(data.table_data);
-$('.code').text('');
-$('#name_error').text('');
-}
-});
-
-
-});
-
-
-
-
-
-
-
-
-
-
-</script> --}}
-
-
 
 
 
